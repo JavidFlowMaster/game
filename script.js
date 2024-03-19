@@ -1,30 +1,78 @@
-// Generate random number between 1 and 100
-const randomNumber = Math.floor(Math.random() * 100) + 1;
+let username = '';
+let currentGame = '';
+let score = 0;
+let difficulty = 'Easy'; // Default difficulty
 
-// Get references to HTML elements
-const guessField = document.getElementById('guessField');
-const submitButton = document.querySelector('button');
-const message = document.getElementById('message');
+function startGame() {
+  username = document.getElementById('username').value;
+  document.querySelector('.login').classList.add('hidden');
+  document.getElementById('gameSelection').classList.remove('hidden');
+}
 
-// Counter for the number of attempts
-let attempts = 0;
+function startGuessingGame() {
+  currentGame = 'guessing';
+  document.getElementById('guessingGame').classList.remove('hidden');
+  document.getElementById('arithmeticGame').classList.add('hidden');
+  document.getElementById('scoreContainer').classList.add('hidden');
+  document.getElementById('guessMessage').textContent = '';
+  generateRandomNumber();
+}
 
-// Function to check the user's guess
+function startArithmeticGame() {
+  currentGame = 'arithmetic';
+  document.getElementById('arithmeticGame').classList.remove('hidden');
+  document.getElementById('guessingGame').classList.add('hidden');
+  document.getElementById('scoreContainer').classList.add('hidden');
+  document.getElementById('arithmeticMessage').textContent = '';
+  generateArithmeticProblem();
+}
+
+function generateRandomNumber() {
+  randomNumber = Math.floor(Math.random() * 100) + 1;
+}
+
+function generateArithmeticProblem() {
+  const num1 = Math.floor(Math.random() * 10) + 1;
+  const num2 = Math.floor(Math.random() * 10) + 1;
+  const operator = ['+', '-', '*'][Math.floor(Math.random() * 3)];
+  document.getElementById('problem').textContent = `${num1} ${operator} ${num2}`;
+}
+
 function checkGuess() {
+  const guessField = document.getElementById('guessField');
+  const guessMessage = document.getElementById('guessMessage');
   const userGuess = parseInt(guessField.value);
-  attempts++;
-
   if (userGuess === randomNumber) {
-    message.textContent = `Congratulations! You guessed the correct number ${randomNumber} in ${attempts} attempts!`;
-    message.style.color = 'green';
-    submitButton.disabled = true;
-  } else if (userGuess < randomNumber) {
-    message.textContent = 'Too low, try again!';
-    message.style.color = 'red';
+    guessMessage.textContent = `Congratulations! You guessed the correct number ${randomNumber}!`;
+    score += 10;
+    updateScoreboard();
+    guessField.disabled = true;
   } else {
-    message.textContent = 'Too high, try again!';
-    message.style.color = 'red';
+    guessMessage.textContent = userGuess < randomNumber ? 'Too low, try again!' : 'Too high, try again!';
   }
+}
 
-  guessField.value = ''; // Clear the input field
+function checkArithmetic() {
+  const arithmeticAnswer = document.getElementById('arithmeticAnswer');
+  const arithmeticMessage = document.getElementById('arithmeticMessage');
+  const problem = document.getElementById('problem').textContent;
+  const [num1, operator, num2] = problem.split(' ');
+  const correctAnswer = eval(num1 + operator + num2);
+  const userAnswer = parseInt(arithmeticAnswer.value);
+  if (userAnswer === correctAnswer) {
+    arithmeticMessage.textContent = 'Congratulations! You solved the problem!';
+    score += 10;
+    updateScoreboard();
+    arithmeticAnswer.disabled = true;
+  } else {
+    arithmeticMessage.textContent = 'Incorrect answer, try again!';
+  }
+}
+
+function updateScoreboard() {
+  document.getElementById('scoreUsername').textContent = username;
+  document.getElementById('scoreGame').textContent = currentGame;
+  document.getElementById('score').textContent = score;
+  document.getElementById('difficulty').textContent = difficulty;
+  document.getElementById('scoreContainer').classList.remove('hidden');
 }
