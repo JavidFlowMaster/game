@@ -25,3 +25,41 @@ button {
 button:hover {
   background-color: #45a049;
 }
+/* Styles for container and login */
+.container {
+  text-align: center;
+  margin-top: 10%;
+}
+
+.login {
+  margin-bottom: 20px;
+}
+
+/* Styles for game selection buttons */
+#gameSelection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#gameSelection button {
+  padding: 10px 20px;
+  margin: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+#gameSelection button:hover {
+  background-color: #45a049;
+}
+
+/* Styles for games */
+.game {
+  display: none;
+}
+
+.hidden {
+  display: none;
+}
