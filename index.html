@@ -3,16 +3,46 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple Guessing Game</title>
+  <title>Multi-Game Website</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
-    <h1>Simple Guessing Game</h1>
-    <p>Guess a number between 1 and 100:</p>
-    <input type="number" id="guessField">
-    <button onclick="checkGuess()">Submit Guess</button>
-    <p class="message" id="message"></p>
+    <h1>Welcome to Multi-Game Website</h1>
+    <div class="login">
+      <label for="username">Enter your username:</label>
+      <input type="text" id="username">
+      <button onclick="startGame()">Start</button>
+    </div>
+    <div id="gameSelection" class="hidden">
+      <h2>Choose a Game:</h2>
+      <button onclick="startGuessingGame()">Guessing Game</button>
+      <button onclick="startArithmeticGame()">Arithmetic Game</button>
+    </div>
+    <div id="gameContainer" class="hidden">
+      <div id="guessingGame" class="game hidden">
+        <h2>Guessing Game</h2>
+        <p>Guess a number between 1 and 100:</p>
+        <input type="number" id="guessField">
+        <button onclick="checkGuess()">Submit Guess</button>
+        <p class="message" id="guessMessage"></p>
+      </div>
+      <div id="arithmeticGame" class="game hidden">
+        <h2>Arithmetic Game</h2>
+        <p>Solve the following arithmetic problem:</p>
+        <p id="problem"></p>
+        <input type="number" id="arithmeticAnswer">
+        <button onclick="checkArithmetic()">Submit Answer</button>
+        <p class="message" id="arithmeticMessage"></p>
+      </div>
+    </div>
+    <div id="scoreContainer" class="hidden">
+      <h2>Scoreboard</h2>
+      <p>Username: <span id="scoreUsername"></span></p>
+      <p>Game: <span id="scoreGame"></span></p>
+      <p>Score: <span id="score"></span></p>
+      <p>Difficulty: <span id="difficulty"></span></p>
+    </div>
   </div>
 
   <script src="script.js"></script>
