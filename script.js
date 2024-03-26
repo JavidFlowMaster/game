@@ -2,6 +2,7 @@ let username = '';
 let currentGame = '';
 let score = 0;
 let difficulty = 'Easy'; // Default difficulty
+let remainingGuesses = 3; // Limiting user to 3 guesses
 
 function startGame() {
   username = document.getElementById('username').value;
@@ -39,6 +40,7 @@ function generateArithmeticProblem() {
 }
 
 function checkGuess() {
+  if (remainingGuesses === 0) return; // If no more guesses allowed, exit function
   const guessField = document.getElementById('guessField');
   const guessMessage = document.getElementById('guessMessage');
   const userGuess = parseInt(guessField.value);
@@ -49,6 +51,11 @@ function checkGuess() {
     guessField.disabled = true;
   } else {
     guessMessage.textContent = userGuess < randomNumber ? 'Too low, try again!' : 'Too high, try again!';
+    remainingGuesses--; // Decrement remaining guesses
+    if (remainingGuesses === 0) {
+      guessMessage.textContent += ' No more guesses allowed.';
+      guessField.disabled = true;
+    }
   }
 }
 
