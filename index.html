@@ -3,48 +3,152 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Multi-Game Website</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>Number Guessing Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      background-color: #fff;
+      border-radius: 5px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    input[type="text"] {
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-top: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    p {
+      margin: 10px 0;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Welcome to Multi-Game Website</h1>
-    <div class="login">
-      <label for="username">Enter your username:</label>
-      <input type="text" id="username">
-      <button onclick="startGame()">Start</button>
-    </div>
-    <div id="gameSelection" class="hidden">
-      <h2>Choose a Game:</h2>
-      <button onclick="startGuessingGame()">Guessing Game</button>
-      <button onclick="startArithmeticGame()">Arithmetic Game</button>
-    </div>
-    <div id="gameContainer" class="hidden">
-      <div id="guessingGame" class="game hidden">
-        <h2>Guessing Game</h2>
-        <p>Guess a number between 1 and 100:</p>
-        <input type="number" id="guessField">
-        <button onclick="checkGuess()">Submit Guess</button>
-        <p class="message" id="guessMessage"></p>
-      </div>
-      <div id="arithmeticGame" class="game hidden">
-        <h2>Arithmetic Game</h2>
-        <p>Solve the following arithmetic problem:</p>
-        <p id="problem"></p>
-        <input type="number" id="arithmeticAnswer">
-        <button onclick="checkArithmetic()">Submit Answer</button>
-        <p class="message" id="arithmeticMessage"></p>
-      </div>
-    </div>
-    <div id="scoreContainer" class="hidden">
-      <h2>Scoreboard</h2>
-      <p>Username: <span id="scoreUsername"></span></p>
-      <p>Game: <span id="scoreGame"></span></p>
-      <p>Score: <span id="score"></span></p>
-      <p>Difficulty: <span id="difficulty"></span></p>
-    </div>
-  </div>
 
-  <script src="script.js"></script>
+<div class="container">
+  <h1>Number Guessing Game</h1>
+  <p>Choose the difficulty level:</p>
+  <button onclick="startGame('easy')">Easy</button>
+  <button onclick="startGame('mid')">Mid</button>
+  <button onclick="startGame('hard')">Hard</button>
+  <p id="output"></p>
+</div>
+
+<script>
+  function startGame(difficulty) {
+    let maxAttempts;
+    if (difficulty === "easy") {
+      maxAttempts = 10;
+    } else if (difficulty === "mid") {
+      maxAttempts = 7;
+    } else if (difficulty === "hard") {
+      maxAttempts = 5;
+    }
+
+    let secretNumber = Math.floor(Math.random() * 100) + 1;
+    let attempts = 0;
+    let wins = 0;
+    let losses = 0;
+
+    let output = document.getElementById("output");
+
+    output.innerHTML = `
+      <p>Difficulty: ${difficulty}</p>
+      <p>Wins: ${wins}</p>
+      <p>Losses: ${losses}</p>
+      <input type="text" id="guess" placeholder="Enter your guess">
+      <button onclick="checkGuess(${maxAttempts}, ${secretNumber}, '${difficulty}')">Submit Guess</button>
+    `;
+  }
+
+  function checkGuess(maxAttempts, secretNumber, difficulty) {
+    let guess = parseInt(document.getElementById("guess").value);
+    let output = document.getElementById("output");
+    let attempts = 1;
+    let wins = 0;
+    let losses = 0;
+
+    if (guess < 1 || guess > 100 || isNaN(guess)) {
+      output.innerHTML = "<p>Invalid input. Please choose a number between 1 and 100.</p>";
+      return;
+    }
+
+    attempts++;
+
+    if (guess === secretNumber) {
+      wins++;
+      output.innerHTML = `
+        <p>Nice guess!</p>
+        <p>Wins: ${wins}</p>
+        <p>Losses: ${losses}</p>
+        <input type="text" id="guess" placeholder="Enter your guess">
+        <button onclick="checkGuess(${maxAttempts}, ${secretNumber}, '${difficulty}')">Submit Guess</button>
+      `;
+      secretNumber = Math.floor(Math.random() * 100) + 1;
+      attempts = 0;
+    } else if (guess < secretNumber) {
+      output.innerHTML = `
+        <p>Too low! Try HIGHER.</p>
+        <p>Wins: ${wins}</p>
+        <p>Losses: ${losses}</p>
+        <input type="text" id="guess" placeholder="Enter your guess">
+        <button onclick="checkGuess(${maxAttempts}, ${secretNumber}, '${difficulty}')">Submit Guess</button>
+      `;
+    } else {
+      output.innerHTML = `
+        <p>Too high! Try LOWER.</p>
+        <p>Wins: ${wins}</p>
+        <p>Losses: ${losses}</p>
+        <input type="text" id="guess" placeholder="Enter your guess">
+        <button onclick="checkGuess(${maxAttempts}, ${secretNumber}, '${difficulty}')">Submit Guess</button>
+      `;
+    }
+
+    if (attempts === maxAttempts) {
+      losses++;
+      output.innerHTML = `
+        <p>You lose! Out of attempts.</p>
+        <p>Wins: ${wins}</p>
+        <p>Losses: ${losses}</p>
+        <p>Secret number was ${secretNumber}</p>
+        <button onclick="startGame('${difficulty}')">Play Again</button>
+      `;
+      secretNumber = Math.floor(Math.random() * 100) + 1;
+      attempts = 0;
+    }
+  }
+</script>
+
 </body>
 </html>
