@@ -87,9 +87,15 @@
       <p>Difficulty: ${difficulty}</p>
       <p>Wins: ${wins}</p>
       <p>Losses: ${losses}</p>
-      <input type="text" id="guess" placeholder="Enter your guess">
+      <input type="text" id="guess" placeholder="Enter your guess" onkeypress="handleKeyPress(event, ${maxAttempts}, ${secretNumber}, '${difficulty}')">
       <button onclick="checkGuess(${maxAttempts}, ${secretNumber}, '${difficulty}')">Submit Guess</button>
     `;
+  }
+
+  function handleKeyPress(event, maxAttempts, secretNumber, difficulty) {
+    if (event.key === 'Enter') {
+      checkGuess(maxAttempts, secretNumber, difficulty);
+    }
   }
 
   function checkGuess(maxAttempts, secretNumber, difficulty) {
@@ -112,7 +118,7 @@
         <p>Nice guess!</p>
         <p>Wins: ${wins}</p>
         <p>Losses: ${losses}</p>
-        <input type="text" id="guess" placeholder="Enter your guess">
+        <input type="text" id="guess" placeholder="Enter your guess" onkeypress="handleKeyPress(event, ${maxAttempts}, ${secretNumber}, '${difficulty}')">
         <button onclick="checkGuess(${maxAttempts}, ${secretNumber}, '${difficulty}')">Submit Guess</button>
       `;
       secretNumber = Math.floor(Math.random() * 100) + 1;
@@ -122,7 +128,7 @@
         <p>Too low! Try HIGHER.</p>
         <p>Wins: ${wins}</p>
         <p>Losses: ${losses}</p>
-        <input type="text" id="guess" placeholder="Enter your guess">
+        <input type="text" id="guess" placeholder="Enter your guess" onkeypress="handleKeyPress(event, ${maxAttempts}, ${secretNumber}, '${difficulty}')">
         <button onclick="checkGuess(${maxAttempts}, ${secretNumber}, '${difficulty}')">Submit Guess</button>
       `;
     } else {
@@ -130,7 +136,7 @@
         <p>Too high! Try LOWER.</p>
         <p>Wins: ${wins}</p>
         <p>Losses: ${losses}</p>
-        <input type="text" id="guess" placeholder="Enter your guess">
+        <input type="text" id="guess" placeholder="Enter your guess" onkeypress="handleKeyPress(event, ${maxAttempts}, ${secretNumber}, '${difficulty}')">
         <button onclick="checkGuess(${maxAttempts}, ${secretNumber}, '${difficulty}')">Submit Guess</button>
       `;
     }
