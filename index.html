@@ -87,6 +87,7 @@
       <p>Difficulty: ${difficulty}</p>
       <p>Wins: ${wins}</p>
       <p>Losses: ${losses}</p>
+      <p>Attempts: ${attempts}/${maxAttempts}</p>
       <input type="text" id="guess" placeholder="Enter your guess" onkeypress="handleKeyPress(event, ${maxAttempts}, ${secretNumber}, '${difficulty}')">
       <button onclick="checkGuess(${maxAttempts}, ${secretNumber}, '${difficulty}')">Submit Guess</button>
     `;
@@ -101,16 +102,25 @@
   function checkGuess(maxAttempts, secretNumber, difficulty) {
     let guess = parseInt(document.getElementById("guess").value);
     let output = document.getElementById("output");
-    let attempts = 1;
-    let wins = 0;
-    let losses = 0;
+    let attempts = parseInt(output.getElementsByTagName("p")[2].innerHTML.split("/")[0]) + 1;
+    let wins = parseInt(output.getElementsByTagName("p")[1].innerHTML.split(": ")[1]);
+    let losses = parseInt(output.getElementsByTagName("p")[2].innerHTML.split(": ")[1]);
 
     if (guess < 1 || guess > 100 || isNaN(guess)) {
       output.innerHTML = "<p>Invalid input. Please choose a number between 1 and 100.</p>";
       return;
     }
 
-    attempts++;
+    if (attempts <= maxAttempts) {
+      output.innerHTML = `
+        <p>Difficulty: ${difficulty}</p>
+        <p>Wins: ${wins}</p>
+        <p>Losses: ${losses}</p>
+        <p>Attempts: ${attempts}/${maxAttempts}</p>
+        <input type="text" id="guess" placeholder="Enter your guess" onkeypress="handleKeyPress(event, ${maxAttempts}, ${secretNumber}, '${difficulty}')">
+        <button onclick="checkGuess(${maxAttempts}, ${secretNumber}, '${difficulty}')">Submit Guess</button>
+      `;
+    }
 
     if (guess === secretNumber) {
       wins++;
@@ -118,6 +128,7 @@
         <p>Nice guess!</p>
         <p>Wins: ${wins}</p>
         <p>Losses: ${losses}</p>
+        <p>Attempts: ${attempts}/${maxAttempts}</p>
         <input type="text" id="guess" placeholder="Enter your guess" onkeypress="handleKeyPress(event, ${maxAttempts}, ${secretNumber}, '${difficulty}')">
         <button onclick="checkGuess(${maxAttempts}, ${secretNumber}, '${difficulty}')">Submit Guess</button>
       `;
@@ -128,6 +139,7 @@
         <p>Too low! Try HIGHER.</p>
         <p>Wins: ${wins}</p>
         <p>Losses: ${losses}</p>
+        <p>Attempts: ${attempts}/${maxAttempts}</p>
         <input type="text" id="guess" placeholder="Enter your guess" onkeypress="handleKeyPress(event, ${maxAttempts}, ${secretNumber}, '${difficulty}')">
         <button onclick="checkGuess(${maxAttempts}, ${secretNumber}, '${difficulty}')">Submit Guess</button>
       `;
@@ -136,6 +148,7 @@
         <p>Too high! Try LOWER.</p>
         <p>Wins: ${wins}</p>
         <p>Losses: ${losses}</p>
+        <p>Attempts: ${attempts}/${maxAttempts}</p>
         <input type="text" id="guess" placeholder="Enter your guess" onkeypress="handleKeyPress(event, ${maxAttempts}, ${secretNumber}, '${difficulty}')">
         <button onclick="checkGuess(${maxAttempts}, ${secretNumber}, '${difficulty}')">Submit Guess</button>
       `;
@@ -147,6 +160,7 @@
         <p>You lose! Out of attempts.</p>
         <p>Wins: ${wins}</p>
         <p>Losses: ${losses}</p>
+        <p>Attempts: ${attempts}/${maxAttempts}</p>
         <p>Secret number was ${secretNumber}</p>
         <button onclick="startGame('${difficulty}')">Play Again</button>
       `;
