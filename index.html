@@ -4,55 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Number Guessing Game</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #f4f4f4;
-    }
-
-    .container {
-      background-color: #fff;
-      border-radius: 5px;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      text-align: center;
-    }
-
-    h1 {
-      margin-top: 0;
-    }
-
-    input[type="text"] {
-      padding: 8px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      margin-top: 10px;
-    }
-
-    button {
-      padding: 10px 20px;
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    p {
-      margin: 10px 0;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
 
@@ -65,101 +17,7 @@
   <p id="output"></p>
 </div>
 
-<script>
-  let secretNumber, attempts, wins, losses, maxAttempts;
-
-  function startGame(difficulty) {
-    if (difficulty === "easy") {
-      maxAttempts = 10;
-    } else if (difficulty === "mid") {
-      maxAttempts = 7;
-    } else if (difficulty === "hard") {
-      maxAttempts = 5;
-    }
-
-    secretNumber = Math.floor(Math.random() * 100) + 1;
-    attempts = 0;
-    wins = 0;
-    losses = 0;
-
-    updateOutput(difficulty);
-  }
-
-  function updateOutput(difficulty) {
-    let output = document.getElementById("output");
-    output.innerHTML = `
-      <p>Difficulty: ${difficulty}</p>
-      <p>Wins: ${wins}</p>
-      <p>Losses: ${losses}</p>
-      <p>Attempts: ${attempts}/${maxAttempts}</p>
-      <input type="text" id="guess" placeholder="Enter your guess" onkeypress="handleKeyPress(event, '${difficulty}')">
-      <button onclick="checkGuess('${difficulty}')">Submit Guess</button>
-    `;
-  }
-
-  function handleKeyPress(event, difficulty) {
-    if (event.key === 'Enter') {
-      checkGuess(difficulty);
-    }
-  }
-
-  function checkGuess(difficulty) {
-    let guess = parseInt(document.getElementById("guess").value);
-    let output = document.getElementById("output");
-    attempts++;
-
-    if (guess < 1 || guess > 100 || isNaN(guess)) {
-      output.innerHTML = "<p>Invalid input. Please choose a number between 1 and 100.</p>";
-      return;
-    }
-
-    if (guess === secretNumber) {
-      wins++;
-      output.innerHTML = `
-        <p>Nice guess!</p>
-        <p>Wins: ${wins}</p>
-        <p>Losses: ${losses}</p>
-        <p>Attempts: ${attempts}/${maxAttempts}</p>
-        <input type="text" id="guess" placeholder="Enter your guess" onkeypress="handleKeyPress(event, '${difficulty}')">
-        <button onclick="checkGuess('${difficulty}')">Submit Guess</button>
-      `;
-      secretNumber = Math.floor(Math.random() * 100) + 1;
-      attempts = 0;
-    } else if (guess < secretNumber) {
-      output.innerHTML = `
-        <p>Too low! Try HIGHER.</p>
-        <p>Wins: ${wins}</p>
-        <p>Losses: ${losses}</p>
-        <p>Attempts: ${attempts}/${maxAttempts}</p>
-        <input type="text" id="guess" placeholder="Enter your guess" onkeypress="handleKeyPress(event, '${difficulty}')">
-        <button onclick="checkGuess('${difficulty}')">Submit Guess</button>
-      `;
-    } else {
-      output.innerHTML = `
-        <p>Too high! Try LOWER.</p>
-        <p>Wins: ${wins}</p>
-        <p>Losses: ${losses}</p>
-        <p>Attempts: ${attempts}/${maxAttempts}</p>
-        <input type="text" id="guess" placeholder="Enter your guess" onkeypress="handleKeyPress(event, '${difficulty}')">
-        <button onclick="checkGuess('${difficulty}')">Submit Guess</button>
-      `;
-    }
-
-    if (attempts === maxAttempts) {
-      losses++;
-      output.innerHTML = `
-        <p>You lose! Out of attempts.</p>
-        <p>Wins: ${wins}</p>
-        <p>Losses: ${losses}</p>
-        <p>Attempts: ${attempts}/${maxAttempts}</p>
-        <p>Secret number was ${secretNumber}</p>
-        <button onclick="startGame('${difficulty}')">Play Again</button>
-      `;
-      secretNumber = Math.floor(Math.random() * 100) + 1;
-      attempts = 0;
-    }
-  }
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
