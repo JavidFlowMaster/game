@@ -102,7 +102,7 @@
   function checkGuess(maxAttempts, secretNumber, difficulty) {
     let guess = parseInt(document.getElementById("guess").value);
     let output = document.getElementById("output");
-    let attempts = parseInt(output.getElementsByTagName("p")[2].innerHTML.split("/")[0]) + 1;
+    let attempts = parseInt(output.getElementsByTagName("p")[3].innerHTML.split("/")[0]) + 1;
     let wins = parseInt(output.getElementsByTagName("p")[1].innerHTML.split(": ")[1]);
     let losses = parseInt(output.getElementsByTagName("p")[2].innerHTML.split(": ")[1]);
 
